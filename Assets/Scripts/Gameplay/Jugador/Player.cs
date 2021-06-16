@@ -11,12 +11,12 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject bala;
     private Input entrada;
     private Vector2 direccionDeInputMovimiento;
+    [SerializeField] private float velocidad;
 
-    public GameObject cursor;
 
-
-    const float BORDE_IZQUIERDO = -11.5f;
-    const float BORDE_DERECHO = 11.5f;
+    
+    const float BORDE_LATERAL = 8.5f;
+    const float BORDE_SUPERIOR = 4.5f;
 
 
     void Awake() {
@@ -31,6 +31,11 @@ public class Player : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+        entrada.Enable();
+    }
+
     void Update() {
         Mover();
     }
@@ -40,34 +45,29 @@ public class Player : MonoBehaviour
     }
 
     private void Mover() {
-        if(DebeMoverse())
-            jugador.position += Vector3.right * direccionDeInputMovimiento.x * Time.deltaTime * 2f;
+        jugador.position += Vector3.right * direccionDeInputMovimiento.x * Time.deltaTime * this.velocidad;
+        jugador.position += Vector3.up * direccionDeInputMovimiento.y * Time.deltaTime * this.velocidad;
+        jugador.position = new Vector3(
+            ClamplearEjeX(jugador.position.x),
+            ClamplearEjeY(jugador.position.y),
+            jugador.position.z
+        );
+
     }
 
-    private bool DebeMoverse() {
-        if ((estaTocandoBordeIzquierdo() && direccionDeInputMovimiento.x > 0  ) || ( estaTocandoBordeDerecho() && direccionDeInputMovimiento.x < 0 ))
-            return true;
-        if (!estaTocandoBordeIzquierdo() && !estaTocandoBordeDerecho())
-            return true;
-        return false;
+    private float ClamplearEjeX(float posicion){
+        return Mathf.Clamp(posicion, (BORDE_LATERAL * -1f), BORDE_LATERAL);
+    }
+    private float ClamplearEjeY(float posicion)
+    {
+        return Mathf.Clamp(posicion, (BORDE_SUPERIOR * -1f), BORDE_SUPERIOR);
     }
 
-    private bool estaTocandoBordeIzquierdo() {
-        if(jugador.position.x <= BORDE_IZQUIERDO) return true;
-        return false;
-    }
-
-    private bool estaTocandoBordeDerecho() {
-        if(jugador.position.x >= BORDE_DERECHO) return true;
-        return false;
-    }
 
 
     private void Disparar(InputAction.CallbackContext ctx) {
-        Instantiate(bala, jugador.position, Quaternion.identity);
+        Instantiate(bala, jugador.position, jugador.rotation);
     }
 
-    private void OnEnable() {
-        entrada.Enable();
-    }
+    
 }
