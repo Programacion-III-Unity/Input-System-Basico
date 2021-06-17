@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Jugador: MonoBehaviour
 {
     [SerializeField] private GameObject bala;
     [SerializeField] private float velocidad;
     Transform jugador;
-    PlayerInput entrada;
     private Vector2 direccionDeInput;
     
     const float BORDE_LATERAL = 8.5f;
@@ -18,10 +17,13 @@ public class Player : MonoBehaviour
 
     void Start() {
         jugador = GetComponent<Transform>();
-        entrada = GetComponent<PlayerInput>();
     }
 
     private void Update(){
+        Mover();
+    }
+
+    private void Mover(){
         jugador.Translate(Vector3.right * this.direccionDeInput.x * Time.deltaTime * this.velocidad, Space.Self);
         jugador.Translate(Vector3.up * this.direccionDeInput.y * Time.deltaTime * this.velocidad, Space.Self);
         jugador.position = new Vector3(
@@ -31,18 +33,15 @@ public class Player : MonoBehaviour
         );
     }
 
-    public void OnMovimiento(InputValue value){
-        this.direccionDeInput = (Vector2)value.Get();
-        
-    }
-
     private float ClamplearEjeX(float posicion){
         return Mathf.Clamp(posicion, (BORDE_LATERAL * -1f), BORDE_LATERAL);
     }
     private float ClamplearEjeY(float posicion){
         return Mathf.Clamp(posicion, (BORDE_SUPERIOR * -1f), BORDE_SUPERIOR);
     }
-
+    public void OnMovimiento(InputValue value){
+        this.direccionDeInput = (Vector2)value.Get();
+    }
 
     public void OnDisparo(InputValue value){
         GameObject nuevaBala;
@@ -53,7 +52,6 @@ public class Player : MonoBehaviour
     }
 
     public void OnSalir(InputValue value){
-        Debug.Log(value);
         Application.Quit();
     }
 
