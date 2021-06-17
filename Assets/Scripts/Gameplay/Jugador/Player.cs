@@ -66,7 +66,9 @@ public class Player : MonoBehaviour
 
 
     private void Disparar(InputAction.CallbackContext ctx) {
-        Instantiate(bala, jugador.position, jugador.rotation);
+        
+        if(ctx.ReadValue<float>() == 1f)
+            Instantiate(bala, jugador.position, jugador.rotation);
     }
 
     
