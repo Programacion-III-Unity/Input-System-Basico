@@ -6,47 +6,28 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-
-    Transform jugador;
     [SerializeField] private GameObject bala;
-    private Input entrada;
-    private Vector2 direccionDeInput;
     [SerializeField] private float velocidad;
-
-
+    Transform jugador;
+    PlayerInput entrada;
+    private Vector2 direccionDeInput;
     
     const float BORDE_LATERAL = 8.5f;
     const float BORDE_SUPERIOR = 4.5f;
 
 
-    void Awake() {
-        entrada = new Input();
-        entrada.Player.Disparo.performed += Disparar;
-        entrada.Player.Movimiento.performed += InputMover;
-
-    }
-
     void Start() {
         jugador = GetComponent<Transform>();
-
-    }
-
-    private void OnEnable()
-    {
-        entrada.Enable();
+        entrada = GetComponent<PlayerInput>();
     }
 
     void Update() {
         Mover();
     }
 
-    private void InputMover(InputAction.CallbackContext ctx) {
-        this.direccionDeInput = ctx.ReadValue<Vector2>();
-    }
-
     private void Mover() {
-        jugador.Translate(Vector3.right * this.direccionDeInput.x * Time.deltaTime * this.velocidad);
-        jugador.Translate(Vector3.up * this.direccionDeInput.y * Time.deltaTime * this.velocidad);
+        jugador.Translate(Vector3.right * this.direccionDeInput.x * Time.deltaTime * this.velocidad,Space.Self);
+        jugador.Translate(Vector3.up * this.direccionDeInput.y * Time.deltaTime * this.velocidad, Space.Self);
         jugador.position = new Vector3(
             ClamplearEjeX(jugador.position.x),
             ClamplearEjeY(jugador.position.y),
@@ -64,16 +45,21 @@ public class Player : MonoBehaviour
     }
 
 
+    public void OnMovimiento(InputValue value)
+    {
+        Debug.Log(value.Get());
+        this.direccionDeInput = (Vector2)value.Get();
+    }
 
-    private void Disparar(InputAction.CallbackContext ctx) {
+    
+    public void OnDisparo(InputValue value)
+    {
         GameObject nuevaBala;
-        if (ctx.ReadValue<float>() == 1f)
+        if ((float)value.Get() == 1f)
         {
             nuevaBala = Instantiate(bala, jugador.position, jugador.rotation);
             nuevaBala.transform.parent = GameObject.Find("__Dynamic").transform;
         }
-            
-
     }
 
     
