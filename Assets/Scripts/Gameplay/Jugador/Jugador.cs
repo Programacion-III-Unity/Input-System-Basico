@@ -8,8 +8,9 @@ public class Jugador: MonoBehaviour
 {
     [SerializeField] private GameObject bala;
     [SerializeField] private float velocidad;
-    Transform jugador;
+    Transform jugador; 
     private Vector2 direccionDeInput;
+    
     
     const float BORDE_LATERAL = 8.5f;
     const float BORDE_SUPERIOR = 4.5f;
@@ -17,6 +18,8 @@ public class Jugador: MonoBehaviour
 
     void Start() {
         jugador = GetComponent<Transform>();
+    
+
     }
 
     private void Update(){
@@ -34,11 +37,18 @@ public class Jugador: MonoBehaviour
     }
 
     private float ClamplearEjeX(float posicion){
-        return Mathf.Clamp(posicion, (BORDE_LATERAL * -1f), BORDE_LATERAL);
+
+        return Mathf.Clamp(posicion, (ObtenerLimiteDePantalla().x * -1f), ObtenerLimiteDePantalla().x);
     }
     private float ClamplearEjeY(float posicion){
-        return Mathf.Clamp(posicion, (BORDE_SUPERIOR * -1f), BORDE_SUPERIOR);
+        return Mathf.Clamp(posicion, (ObtenerLimiteDePantalla().y * -1f), ObtenerLimiteDePantalla().y);
     }
+
+    private Vector2 ObtenerLimiteDePantalla(){
+        return Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
+    }
+
+
     public void OnMovimiento(InputValue value){
         this.direccionDeInput = (Vector2)value.Get();
     }

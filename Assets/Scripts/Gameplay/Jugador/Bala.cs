@@ -11,12 +11,25 @@ public class Bala : MonoBehaviour
         posicion = GetComponent<Transform>();
     }
 
-    void Update() {
-        posicion.position += Vector3.right * Time.deltaTime * 8f;
-        CheckearLimiteDePantalla();
+    void Update()
+    {
+        MoverHaciaLaDerecha();
+        if (TraspasaLimiteDePantalla())
+            DestruirBala();
     }
 
-    private void CheckearLimiteDePantalla() {
-        if (posicion.position.x > 10f) Destroy(this.gameObject);
+    private void MoverHaciaLaDerecha(){
+        posicion.position += Vector3.right * Time.deltaTime * 8f;
+    }
+    private bool TraspasaLimiteDePantalla(){
+        if (posicion.position.x > ObtenerLimiteDePantalla().x) return true;
+        return false;
+    }
+    private Vector2 ObtenerLimiteDePantalla(){
+        return Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
+    }
+
+    private void DestruirBala(){
+        Destroy(this.gameObject);
     }
 }
