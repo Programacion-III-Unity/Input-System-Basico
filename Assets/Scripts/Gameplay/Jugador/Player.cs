@@ -21,9 +21,7 @@ public class Player : MonoBehaviour
         entrada = GetComponent<PlayerInput>();
     }
 
-    public void OnMovimiento(InputValue value)
-    {
-        this.direccionDeInput = (Vector2)value.Get();
+    private void Update(){
         jugador.Translate(Vector3.right * this.direccionDeInput.x * Time.deltaTime * this.velocidad, Space.Self);
         jugador.Translate(Vector3.up * this.direccionDeInput.y * Time.deltaTime * this.velocidad, Space.Self);
         jugador.position = new Vector3(
@@ -31,6 +29,11 @@ public class Player : MonoBehaviour
             ClamplearEjeY(jugador.position.y),
             jugador.position.z
         );
+    }
+
+    public void OnMovimiento(InputValue value){
+        this.direccionDeInput = (Vector2)value.Get();
+        
     }
 
     private float ClamplearEjeX(float posicion){
@@ -47,6 +50,11 @@ public class Player : MonoBehaviour
             nuevaBala = Instantiate(bala, jugador.position, jugador.rotation);
             nuevaBala.transform.parent = GameObject.Find("__Dynamic").transform;
         }
+    }
+
+    public void OnSalir(InputValue value){
+        Debug.Log(value);
+        Application.Quit();
     }
 
     
