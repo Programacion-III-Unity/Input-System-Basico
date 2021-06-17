@@ -200,6 +200,17 @@ public class @Input : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""386d4846-c7cb-4d4a-800e-e22a3045e9a0"",
+                    ""path"": ""<XInputController>/dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movimiento"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""c57e10ff-7bbc-4862-b80d-178e13a41a03"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
