@@ -66,9 +66,14 @@ public class Player : MonoBehaviour
 
 
     private void Disparar(InputAction.CallbackContext ctx) {
-        
-        if(ctx.ReadValue<float>() == 1f)
-            Instantiate(bala, jugador.position, jugador.rotation);
+        GameObject nuevaBala;
+        if (ctx.ReadValue<float>() == 1f)
+        {
+            nuevaBala = Instantiate(bala, jugador.position, jugador.rotation);
+            nuevaBala.transform.parent = GameObject.Find("__Dynamic").transform;
+        }
+            
+
     }
 
     
