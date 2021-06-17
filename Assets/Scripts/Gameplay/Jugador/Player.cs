@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     Transform jugador;
     [SerializeField] private GameObject bala;
     private Input entrada;
-    private Vector2 direccionDeInputMovimiento;
+    private Vector2 direccionDeInput;
     [SerializeField] private float velocidad;
 
 
@@ -41,12 +41,12 @@ public class Player : MonoBehaviour
     }
 
     private void InputMover(InputAction.CallbackContext ctx) {
-        direccionDeInputMovimiento = ctx.ReadValue<Vector2>();
+        this.direccionDeInput = ctx.ReadValue<Vector2>();
     }
 
     private void Mover() {
-        jugador.position += Vector3.right * direccionDeInputMovimiento.x * Time.deltaTime * this.velocidad;
-        jugador.position += Vector3.up * direccionDeInputMovimiento.y * Time.deltaTime * this.velocidad;
+        jugador.Translate(Vector3.right * this.direccionDeInput.x * Time.deltaTime * this.velocidad);
+        jugador.Translate(Vector3.up * this.direccionDeInput.y * Time.deltaTime * this.velocidad);
         jugador.position = new Vector3(
             ClamplearEjeX(jugador.position.x),
             ClamplearEjeY(jugador.position.y),
